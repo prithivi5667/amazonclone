@@ -8,6 +8,7 @@ import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import uploadRouter from './routers/uploadRouter.js';
+import * as cors from 'cors';
 
 dotenv.config();
 
@@ -15,20 +16,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const whitelist = ['http://localhost:3000', 'http://localhost:5000', 'https://amazonclonept.herokuapp.com']
-const corsOptions = {
-  origin: function (origin, callback) {
-    console.log("** Origin of request " + origin)
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log("Origin acceptable")
-      callback(null, true)
-    } else {
-      console.log("Origin rejected")
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-app.use(cors(corsOptions))
 
 
 
@@ -131,16 +118,16 @@ io.on('connection', (socket) => {
     }
   });
 });
-app.use(express.static(path.join(__dirname, "/frontend/build")));
+// app.use(express.static(path.join(__dirname, "/frontend/build")));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'));
+// });
 
 httpServer.listen(process.env.PORT || 5000, () => {
   console.log(`Serve at http://localhost:${port}`);
 });
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Serve at http://localhost:${port}`);
-});
+// app.listen(process.env.PORT || 6000, () => {
+//   console.log(`Serve at http://localhost:${port}`);
+// });
