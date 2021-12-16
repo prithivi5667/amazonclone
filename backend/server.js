@@ -15,6 +15,24 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const whitelist = ['http://localhost:3000', 'http://localhost:5000', 'https://amazonclonept.herokuapp.com']
+const corsOptions = {
+  origin: function (origin, callback) {
+    console.log("** Origin of request " + origin)
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("Origin acceptable")
+      callback(null, true)
+    } else {
+      console.log("Origin rejected")
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+app.use(cors(corsOptions))
+
+
+
+
 mongoose.connect(process.env.MONGODB_URL || 'mongodb+srv://prithivi:prithivi@cluster0.myqm7.mongodb.net/mainblog?retryWrites=true&w=majority');
 app.use('/api/uploads', uploadRouter);
 app.use('/api/users', userRouter);
@@ -119,10 +137,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'));
 });
 
-// httpServer.listen(port, () => {
-//   console.log(`Serve at http://localhost:${port}`);
-// });
+httpServer.listen(process.env.PORT || 5000, () => {
+  console.log(`Serve at http://localhost:${port}`);
+});
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Serve at http://localhost:${port}`);
 });
