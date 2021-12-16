@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/amazona');
+mongoose.connect(process.env.MONGODB_URL || 'mongodb+srv://prithivi:prithivi@cluster0.myqm7.mongodb.net/mainblog?retryWrites=true&w=majority');
 app.use('/api/uploads', uploadRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
@@ -119,10 +119,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'));
 });
 
-httpServer.listen(port, () => {
-  console.log(`Serve at http://localhost:${port}`);
-});
-
-// app.listen(port, () => {
+// httpServer.listen(port, () => {
 //   console.log(`Serve at http://localhost:${port}`);
 // });
+
+app.listen(port, () => {
+  console.log(`Serve at http://localhost:${port}`);
+});
