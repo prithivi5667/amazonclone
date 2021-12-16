@@ -113,6 +113,11 @@ io.on('connection', (socket) => {
     }
   });
 });
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'));
+});
 
 httpServer.listen(port, () => {
   console.log(`Serve at http://localhost:${port}`);
